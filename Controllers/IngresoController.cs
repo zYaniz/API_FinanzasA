@@ -25,6 +25,26 @@ namespace API_FinanzasA.Controllers
                 }
             };
         }
+        [HttpGet]
+        [Route("MostrarIngresoPorUsuario")]
+        public dynamic MostrarIngresoPorUsuario(string idConsulta)
+        {
+            List<ParamStoreProc> parametros = new List<ParamStoreProc>
+            { new ParamStoreProc("@idUsuario", idConsulta)};
+
+            DataTable tIngreso = DBDatos.listar("MostrarFuentesIngresoPorUsuario", parametros);
+            string jsonIngreso = JsonConvert.SerializeObject(tIngreso);
+
+            return new
+            {
+                exitoso = true,
+                mensaje = "exito",
+                result = new
+                {
+                    usuario = JsonConvert.DeserializeObject<List<IngresoM>>(jsonIngreso)
+                }
+            };
+        }
 
     }
 }

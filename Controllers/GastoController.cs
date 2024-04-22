@@ -25,6 +25,26 @@ namespace API_FinanzasA.Controllers
                 }
             };
         }
+        [HttpGet]
+        [Route("MostrarGastoPorUsuario")]
+        public dynamic MostrarGastoPorUsuario(string idConsulta)
+        {
+            List<ParamStoreProc> parametros = new List<ParamStoreProc>
+            { new ParamStoreProc("@idUsuario", idConsulta)};
+
+            DataTable tGasto = DBDatos.listar("MostrarTiposGastoPorUsuario", parametros);
+            string jsonGasto = JsonConvert.SerializeObject(tGasto);
+
+            return new
+            {
+                exitoso = true,
+                mensaje = "exito",
+                result = new
+                {
+                    usuario = JsonConvert.DeserializeObject<List<GastoM>>(jsonGasto)
+                }
+            };
+        }
 
     }
 }
