@@ -7,6 +7,8 @@ using System.Net;
 
 namespace API_FinanzasA.Controllers
 {
+    [ApiController]
+    [Route("Gastos")]
     public class GastoController : ControllerBase
     {
         [HttpGet]
@@ -15,16 +17,8 @@ namespace API_FinanzasA.Controllers
         {
             DataTable tGasto = DBDatos.listar("MostrarTiposGasto");
             string jsonGasto = JsonConvert.SerializeObject(tGasto);
-
-            return new
-            {
-                exitoso = true,
-                mensaje = "exito",
-                result = new
-                {
-                    usuario = JsonConvert.DeserializeObject<List<GastoM>>(jsonGasto),
-                }
-            };
+            var jsonDsr = JsonConvert.DeserializeObject<List<GastoM>>(jsonGasto);
+            return jsonDsr;
         }
         [HttpGet]
         [Route("MostrarGastoPorUsuario")]
@@ -35,16 +29,8 @@ namespace API_FinanzasA.Controllers
 
             DataTable tGasto = DBDatos.listar("MostrarTiposGastoPorUsuario", parametros);
             string jsonGasto = JsonConvert.SerializeObject(tGasto);
-
-            return new
-            {
-                exitoso = true,
-                mensaje = "exito",
-                result = new
-                {
-                    usuario = JsonConvert.DeserializeObject<List<GastoM>>(jsonGasto)
-                }
-            };
+            var jsonDsr = JsonConvert.DeserializeObject<List<GastoM>>(jsonGasto);
+            return jsonDsr;
         }
         [HttpPost]
         [Route("InsertarGasto")]

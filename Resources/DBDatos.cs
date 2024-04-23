@@ -1,5 +1,6 @@
 ﻿using System.Data.SqlClient;
 using System.Data;
+using System.Text;
 
 namespace API_FinanzasA.Resources
 {
@@ -8,6 +9,11 @@ namespace API_FinanzasA.Resources
         public static string cadenaConexion = "Data Source=sql9001.site4now.net;" +
             "Initial Catalog=db_aa7d35_finanzaschango;User ID=db_aa7d35_finanzaschango_admin;" +
             "Password=FinanzasPro1995;";
+
+        public static string sentenciaSQL = "SQL Vacío";
+        public static Dictionary<string, object> Parametros { get; private set; } = new Dictionary<string, object>();
+        public static StringBuilder sentenciaSQLCompleta = new StringBuilder();
+
         public static DataSet listarTablas(string nombreProcedimiento,
             List<ParamStoreProc> parametros = null)
         {
@@ -59,6 +65,9 @@ namespace API_FinanzasA.Resources
                         cmd.Parameters.AddWithValue(parametro.nombre, parametro.valor);
                     }
                 }
+                Console.WriteLine("SENTENCIA SQL: " + cmd.CommandText);
+                sentenciaSQL = cmd.CommandText;
+
                 DataTable tabla = new DataTable();
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
                 da.Fill(tabla);
@@ -95,6 +104,23 @@ namespace API_FinanzasA.Resources
                         cmd.Parameters.AddWithValue(parametro.nombre, parametro.valor);
                     }
                 }
+
+                Console.WriteLine("SENTENCIA SQL: " + cmd.CommandText);
+                sentenciaSQL = cmd.CommandText;
+                GuardarParametros(cmd);
+
+                sentenciaSQLCompleta.Clear();
+                sentenciaSQLCompleta.Append("EXEC ");
+                sentenciaSQLCompleta.Append(nombreProcedimiento);
+
+                if(parametros != null && parametros.Count > 0)
+                {
+                    sentenciaSQLCompleta.Append(' ');
+                    sentenciaSQLCompleta.Append(string.Join(",", Parametros.Select(p => $"{p.Key}='{p.Value}'")));
+                }
+
+                Console.WriteLine("SQL COMPLETO: " + sentenciaSQLCompleta.ToString());
+
                 int i = cmd.ExecuteNonQuery();
                 return (i > 0) ? true : false;
             }
@@ -104,6 +130,14 @@ namespace API_FinanzasA.Resources
                 return false;
             }
             finally { conexion.Close(); }
+        }
+        private static void GuardarParametros(SqlCommand cmd)
+        {
+            Parametros.Clear();
+            foreach (SqlParameter param in cmd.Parameters)
+            {
+                Parametros.Add(param.ParameterName, param.Value);
+            }
         }
     }
 }

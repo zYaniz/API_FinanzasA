@@ -8,6 +8,8 @@ using System.Net;
 
 namespace API_FinanzasA.Controllers
 {
+    [ApiController]
+    [Route("Usuario")]
     public class UsuarioController : ControllerBase
     {
 
@@ -17,16 +19,8 @@ namespace API_FinanzasA.Controllers
         {
             DataTable tUsuario = DBDatos.listar("MostrarUsuarios");
             string jsonUsuario = JsonConvert.SerializeObject(tUsuario);
-
-            return new
-            {
-                exitoso = true,
-                mensaje = "exito",
-                result = new
-                {
-                    usuario = JsonConvert.DeserializeObject<List<UsuarioM>>(jsonUsuario),
-                }
-            };
+            var jsonDsr = JsonConvert.DeserializeObject<List<UsuarioM>>(jsonUsuario);
+            return jsonDsr;
         }
 
         [HttpGet]
@@ -38,16 +32,8 @@ namespace API_FinanzasA.Controllers
 
             DataTable tUsuario = DBDatos.listar("MostrarUsuarioPorID", parametros);
             string jsonUsuario = JsonConvert.SerializeObject(tUsuario);
-
-            return new
-            {
-                exitoso = true,
-                mensaje = "exito",
-                result = new
-                {
-                    usuario = JsonConvert.DeserializeObject<List<UsuarioM>>(jsonUsuario)
-                }
-            };
+            var jsonDsr = JsonConvert.DeserializeObject<List<UsuarioM>>(jsonUsuario);
+            return jsonDsr;
         }
 
         [HttpPost]

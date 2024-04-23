@@ -7,6 +7,8 @@ using System.Net;
 
 namespace API_FinanzasA.Controllers
 {
+    [ApiController]
+    [Route("Ahorro")]
     public class AhorroController : ControllerBase
     {
 
@@ -16,16 +18,8 @@ namespace API_FinanzasA.Controllers
         {
             DataTable tAhorro = DBDatos.listar("MostrarAhorros");
             string jsonAhorro = JsonConvert.SerializeObject(tAhorro);
-
-            return new
-            {
-                exitoso = true,
-                mensaje = "exito",
-                result = new
-                {
-                    usuario = JsonConvert.DeserializeObject<List<AhorroM>>(jsonAhorro),
-                }
-            };
+            var jsonDsr = JsonConvert.DeserializeObject<List<AhorroM>>(jsonAhorro);
+            return jsonDsr;
         }
 
         [HttpGet]
@@ -37,16 +31,8 @@ namespace API_FinanzasA.Controllers
 
             DataTable tAhorro = DBDatos.listar("MostrarAhorrosPorUsuario", parametros);
             string jsonAhorro = JsonConvert.SerializeObject(tAhorro);
-
-            return new
-            {
-                exitoso = true,
-                mensaje = "exito",
-                result = new
-                {
-                    usuario = JsonConvert.DeserializeObject<List<AhorroM>>(jsonAhorro)
-                }
-            };
+            var jsonDsr = JsonConvert.DeserializeObject<List<AhorroM>>(jsonAhorro);
+            return jsonDsr;
         }
         [HttpPost]
         [Route("InsertarAhorro")]

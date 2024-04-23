@@ -7,6 +7,8 @@ using System.Net;
 
 namespace API_FinanzasA.Controllers
 {
+    [ApiController]
+    [Route("Ingresos")]
     public class IngresoController : ControllerBase
     {
         [HttpGet]
@@ -15,16 +17,8 @@ namespace API_FinanzasA.Controllers
         {
             DataTable tIngreso = DBDatos.listar("MostrarFuentesIngreso");
             string jsonIngreso = JsonConvert.SerializeObject(tIngreso);
-
-            return new
-            {
-                exitoso = true,
-                mensaje = "exito",
-                result = new
-                {
-                    usuario = JsonConvert.DeserializeObject<List<IngresoM>>(jsonIngreso),
-                }
-            };
+            var jsonDsr = JsonConvert.DeserializeObject<List<IngresoM>>(jsonIngreso);
+            return jsonDsr;
         }
 
         [HttpGet]
@@ -36,16 +30,8 @@ namespace API_FinanzasA.Controllers
 
             DataTable tIngreso = DBDatos.listar("MostrarFuentesIngresoPorUsuario", parametros);
             string jsonIngreso = JsonConvert.SerializeObject(tIngreso);
-
-            return new
-            {
-                exitoso = true,
-                mensaje = "exito",
-                result = new
-                {
-                    usuario = JsonConvert.DeserializeObject<List<IngresoM>>(jsonIngreso)
-                }
-            };
+            var jsonDsr = JsonConvert.DeserializeObject<List<IngresoM>>(jsonIngreso);
+            return jsonDsr;
         }
         [HttpPost]
         [Route("InsertarIngreso")]
@@ -85,7 +71,7 @@ namespace API_FinanzasA.Controllers
             {
                 List<ParamStoreProc> parametros = new List<ParamStoreProc>
         {
-            new ParamStoreProc("@idFuenteIngreso", id.ToString())
+            new ParamStoreProc("@idFuenteIngre", id.ToString())
         };
 
                 bool exito = DBDatos.ejecutar("EliminarFuenteIngresoPorID", parametros);
@@ -112,7 +98,7 @@ namespace API_FinanzasA.Controllers
             {
                 List<ParamStoreProc> parametros = new List<ParamStoreProc>
         {
-                    new ParamStoreProc("@idFuenteIngreso", ingresoModificado.idFuenteIngreso.ToString()),
+                    new ParamStoreProc("@idFuenteIngre", ingresoModificado.idFuenteIngre.ToString()),
                     new ParamStoreProc("@idUsuario", ingresoModificado.idUsuario.ToString()),
                     new ParamStoreProc("@nombreFuenteIngre", ingresoModificado.nombreFuenteIngre),
                     new ParamStoreProc("@monto", ingresoModificado.monto.ToString()),
