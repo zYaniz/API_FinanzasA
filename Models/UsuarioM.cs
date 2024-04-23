@@ -10,6 +10,7 @@
         public string usuario { get; set; }
         public string clave { get; set; }
         public string fechaNacimiento { get; set; }
+        public string sexo { get; set; }
         public string URL_FotoPerfil { get; set; }
     }
 }

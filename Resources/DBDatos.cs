@@ -6,7 +6,7 @@ namespace API_FinanzasA.Resources
     public class DBDatos
     {
         public static string cadenaConexion = "Data Source=sql9001.site4now.net;" +
-            "Initial Catalog=db_aa7d35;User ID=db_aa7d35_finazasprobd_admin;" +
+            "Initial Catalog=db_aa7d35_finanzaschango;User ID=db_aa7d35_finanzaschango_admin;" +
             "Password=FinanzasPro1995;";
         public static DataSet listarTablas(string nombreProcedimiento,
             List<ParamStoreProc> parametros = null)
